@@ -26,8 +26,6 @@ RUN groupadd --gid 1000 logstash && \
     adduser --uid 1000 --gid 1000 \
       --home-dir /usr/share/logstash --no-create-home \
       logstash
-      
-WORKDIR /usr/share/logstash
 
 # Add Logstash itself.
 RUN curl -Lo - {{ url_root }}/{{ tarball }} | \
@@ -35,6 +33,8 @@ RUN curl -Lo - {{ url_root }}/{{ tarball }} | \
     mv /usr/share/logstash-{{ elastic_version }} /usr/share/logstash && \
     chown --recursive logstash:logstash /usr/share/logstash/ && \
     ln -s /usr/share/logstash /opt/logstash
+
+WORKDIR /usr/share/logstash
 
 ENV ELASTIC_CONTAINER true
 ENV PATH=/usr/share/logstash/bin:$PATH
